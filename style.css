@@ -110,3 +110,8 @@ body {
 .list-inline-item:hover{
     text-decoration: underline;
 }
+
+.num {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}

@@ -160,33 +160,37 @@
             });
         });
 
-        function sendData(product) {
-            console.log(product);
-            localStorage.setItem("product", JSON.stringify(product));
+        // function sendData(product) {
+        //     console.log(product);
+        //     localStorage.setItem("product", JSON.stringify(product));
 
-        }
+        // }
 
-        function displayProductInfo() {
-            const product = JSON.parse(localStorage.getItem("product"));
-            console.log(product);
+    //     function displayProductInfo() {
+    //         const product = JSON.parse(localStorage.getItem("selectedProductList"));
+    //         console.log(product);
 
-            const productInfo = document.getElementById("produkten");
-            productInfo.textContent = `
-        Produktnamn: ${product.title}
-        Pris: ${product.price}
-        Beskrivning: ${product.category}
-    `;
+    //         const productInfo = document.getElementById("produkten");
+    //         product.forEach(element => {
+    //             const prodImg = document.createElement('img');
+    //         prodImg.src = element.image;
+    //         prodImg.alt = element.title;
+    //         prodImg.classList.add('card-img-top');
+    //         prodImg.classList.add('bg-secondary');
+    //         prodImg.style.height = '10em';
+    //         prodImg.style.maxWidth = 'fit-content';
+    //         productInfo.appendChild(prodImg);
 
-            const prodImg = document.createElement('img');
-            prodImg.src = product.image;
-            prodImg.alt = product.title;
-            prodImg.classList.add('card-img-top');
-            prodImg.classList.add('bg-secondary');
-            prodImg.style.height = '10em';
-            prodImg.style.maxWidth = 'fit-content';
-            productInfo.appendChild(prodImg);
-        }
+    //             productInfo.textContent += `
+    //     Produktnamn: ${element.title}
+    //     Pris: ${element.price}
+    // `;
+    // productInfo.appendChild(prodImg);
 
+    //         });
+    //     }
+
+ 
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
