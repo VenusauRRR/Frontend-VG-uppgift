@@ -83,6 +83,8 @@ function displayProductInfo() {
 
     const productInfo = document.getElementById("productList");
     product.forEach(element => {
+        const index = element.id;
+
         const div = document.createElement('div');
         div.classList.add('row');
         div.classList.add('border-bottom');
@@ -103,42 +105,65 @@ function displayProductInfo() {
     div.appendChild(prodImg);
 
     let amountBtnDiv = document.createElement('div');
-    amountBtnDiv.innerHTML = `<span class="minus">-</span>
-    <span class="num">01</span>
-    <span class="plus">+</span>
-    `;
+
+    const minusBtn = document.createElement('span');
+    minusBtn.innerHTML = '-';
+    minusBtn.classList.add(`minus${index}`);
+    amountBtnDiv.appendChild(minusBtn);
+
+    const numBtn = document.createElement('span');
+    numBtn.innerHTML = '01';
+    numBtn.classList.add(`num${index}`);
+    amountBtnDiv.appendChild(numBtn);
+
+    const plusBtn = document.createElement('span');
+    plusBtn.innerHTML = '+';
+    plusBtn.classList.add(`plus${index}`);
+    amountBtnDiv.appendChild(plusBtn);
+
+
     amountBtnDiv.classList.add('col-md-1');
     amountBtnDiv.style.cursor = 'pointer';
 
-
     div.innerHTML += `
-    <div class="col-md-8">${element.title}</div>
+    <div class="col-md-7">${element.title}</div>
     <div class="col-md-1">$${element.price}</div>
     `;
 
     div.appendChild(amountBtnDiv);
 
+    
+    const productSum = document.createElement('span');
+    productSum.innerHTML = `${element.price}`;
+    productSum.classList.add(`productSum${index}`);
+productSum.classList.add('col-md-1');
+    div.appendChild(productSum);
+
     productInfo.appendChild(div);
 
-    const minus = document.querySelector('.minus');
-const plus = document.querySelector('.plus');
-const num = document.querySelector('.num');
+    const minus = document.querySelector(`.minus${index}`);
+const plus = document.querySelector(`.plus${index}`);
+const num = document.querySelector(`.num${index}`);
+let prodSum = document.querySelector(`.productSum${index}`);
 
 let amountNum = 1;
 plus.addEventListener('click',() => {
     amountNum++;
     num.innerHTML = amountNum < 10? '0'+amountNum : amountNum;
+    prodSum.innerHTML = '$' + Number(element.price)*Number(amountNum);
 })
 
 minus.addEventListener('click',() => {
     amountNum--;
     if (amountNum < 1){
-        num.innerHTML = 0;
+        amountNum = 0;
+        num.innerHTML = '0'+amountNum;
     } else if (amountNum >0 && amountNum < 10){
         num.innerHTML = '0'+amountNum;
     } else {
         num.innerHTML = amountNum;
     }
+    prodSum.innerHTML = '$' + Number(element.price)*Number(amountNum);
 })
 
     });
