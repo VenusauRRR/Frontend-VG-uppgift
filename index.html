@@ -140,6 +140,11 @@
 
             loadContent('home');
 
+            $(document).on('click', '.btn-primary', function (e) {
+                e.preventDefault();
+                loadContent('orderform');
+            });
+
             $('.nav-link').click(function (e) {
                 e.preventDefault();
 
@@ -154,10 +159,7 @@
                 loadContent(page);
             });
 
-            $(document).on('click', '.btn-primary', function (e) {
-                e.preventDefault();
-                loadContent('orderform');
-            });
+
         });
     </script>
 

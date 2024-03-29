@@ -1,3 +1,5 @@
+let selectedProductList = []
+
 function displayProducts(categoryTitle, categoryAPI) {
     fetch(categoryAPI)
         .then(res => res.json())
@@ -56,7 +58,6 @@ function displayProducts(categoryTitle, categoryAPI) {
 
                 proBodyOrderBtn.addEventListener("click", function () {
                     sendData(product);
-                    // updateTotalSum();
                 });
 
                 productContainer.appendChild(prodBody);
@@ -66,25 +67,24 @@ function displayProducts(categoryTitle, categoryAPI) {
         });
 }
 
-// let existingProductList = JSON.parse(localStorage.getItem("selectedProductList"));
-let selectedProductList = []
-
-
-
 function sendData(product) {
-    // console.log(product);
     product.orderSum = 1;
-    // if (existingProductList != null){
-    //     existingProductList.forEach(element => {
-    //         console.log('hellow');
-    //         console.log(element);
-    //         selectedProductList.push(element);
-    //     })
-    // }
+    product.subTotal = product.orderSum*Number(product.price);
     selectedProductList.push(product);
-    localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
 
+    localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
 }
+
+function updateTotalSum() {
+    let totalSum = 0;
+    let totalProdSum = document.getElementById('totalSum');
+    selectedProductList.forEach(element => {
+        totalSum += element.subTotal;
+    })
+    totalProdSum.innerText = `Total Sum: $${totalSum}`;
+    localStorage.setItem('totalSum', totalSum);
+}
+
 
 function displayProductInfo() {
     let product = JSON.parse(localStorage.getItem("selectedProductList"));
@@ -156,15 +156,16 @@ function displayProductInfo() {
 
         let amountNum = element.orderSum;
 
+            updateTotalSum();
+
         plus.addEventListener('click', () => {
             amountNum++;
             num.innerHTML = amountNum < 10 ? '0' + amountNum : amountNum;
-            prodSum.innerHTML = '$' + Number(element.price) * Number(amountNum);
             element.orderSum = amountNum;
-            // localStorage.clear();
+            element.subTotal = Number(element.price) * amountNum;
+            prodSum.innerHTML = '$' + element.subTotal;
             localStorage.setItem('selectedProductList',JSON.stringify(product));
-            updateTotalSum();
-            updateProductSum(element.id,amountNum);
+            updateOrderDetail(element);
         })
 
         minus.addEventListener('click', () => {
@@ -177,9 +178,10 @@ function displayProductInfo() {
             } else {
                 num.innerHTML = '0' + amountNum;
             }
-            prodSum.innerHTML = '$' + Number(element.price) * Number(amountNum);
-
-            // updateTotalSum();
+            element.subTotal = Number(element.price) * amountNum;
+            prodSum.innerHTML = '$' + element.subTotal;
+            localStorage.setItem('selectedProductList',JSON.stringify(product));
+            updateOrderDetail(element);
         })
 
     });
@@ -187,28 +189,14 @@ function displayProductInfo() {
 } //displayProductInfo() ends
 
 
-console.log('three');
-
-function updateTotalSum() {
-    let totalSum = 0;
-    const totalProdSum = document.getElementById('totalSum');
-    let productSumString = document.getElementsByClassName('.subSum');
-    console.log(productSumString);
-
-    // productSumString.forEach(element => {
-    // totalSum += Number(element.substring(1));
-    // totalProdSum.innerHTML += 'hello';
-    // })
-    console.log(totalSum);
-}
-console.log('four');
-
-function updateProductSum(elementID,productSum){
+function updateOrderDetail(element){
     selectedProductList.forEach(item => {
-        if (item.id == elementID){
-            item.orderSum = productSum;
+        if (item.id == element.id){
+            item.orderSum = element.orderSum;
+            item.subTotal = element.subTotal;
         }
     })
+    updateTotalSum();
     localStorage.setItem('selectedProductList',JSON.stringify(selectedProductList));
 }
 
