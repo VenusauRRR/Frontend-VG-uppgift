@@ -11,22 +11,22 @@
     <form action="" style="justify-content: center">
         <div>
             <label for="name">Namn</label> <br>
-            <input type="text" id="name" placeholder="Förnamn Efternamn" class="form-control" required onblur="checkNameLength()">
+            <input type="text" id="name" placeholder="Förnamn Efternamn" class="form-control" required onchange="checkNameLength()">
         </div>
         <br>
         <div>
             <label for="Telefonnummer">Telefonnummer</label> <br>
-            <input type="tel" id="tel" placeholder="+46 (31) 123-4567" class="form-control" required onblur="validateTel()">
+            <input type="tel" id="tel" placeholder="+46 (31) 123-4567" class="form-control" required onchange="validateTel()">
         </div>
         <br>
         <div>
             <label for="Email">Email</label> <br>
-            <input type="text" id="email" placeholder="email@exmaple.com" class="form-control" required onblur="validateEmail()">
+            <input type="text" id="email" placeholder="email@exmaple.com" class="form-control" required onchange="validateEmail()">
         </div>
         <br>
         <div>
             <label for="leveransadress">leveransadress</label> <br>
-            <input type="address" id="address" placeholder="Tex Solgatan 12 123 45 Stockholm" class="form-control" required onblur="validateAd()">
+            <input type="address" id="address" placeholder="Tex Solgatan 12 12345 Stockholm" class="form-control" required onchange="validateAd()">
         </div>
         <input type="submit" value="Skicka" class="form-control pointer color" onclick="confirmOrder()">
     </form>
@@ -56,10 +56,17 @@
         crossorigin="anonymous"></script>
 
 <script>
-    window.onload = function() {
-        let inputField = document.getElementById('name');
-        inputField.setAttribute('maxlength', '50');
-    }
+
+displayProductInfo()
+
+           var inputName = document.getElementById("name");
+
+        inputName.addEventListener("keyup", function() {
+        if (this.value.length > 50) {
+            this.value = this.value.substring(0, 0);
+            alert("Max 50 tecken")
+        }
+        });
 
     function checkNameLength() {
         let inputText = document.getElementById('name').value;
@@ -67,7 +74,7 @@
 
             console.log("rätt namn");
         } else {
-            alert("namnet måste innehålla minst 2 tecken och max 50");
+            alert("namnet måste innehålla minst 2");
         }
     }
 
@@ -81,15 +88,16 @@
             alert("Måste vara i korrekt format (email@exmaple.com)");
         }
     }
-    window.onload = function() {
-        let inputField = document.getElementById('email');
-        inputField.setAttribute('maxlength', '50');
-    }
+        var inputEmail = document.getElementById("email");
 
-    window.onload = function() {
-        let inputField = document.getElementById('tel');
-        inputField.setAttribute('maxlength', '50');
-    }
+        inputEmail.addEventListener("keyup", function() {
+        if (this.value.length > 50) {
+            this.value = this.value.substring(0, 0);
+            alert("Max 50 tecken")
+        }
+        });
+
+    
 
     function validateTel() {
         let inputTel  = document.getElementById('tel').value;
@@ -103,6 +111,15 @@
 
     }
 
+                var inputTel = document.getElementById("tel");
+
+                inputTel.addEventListener("keyup", function() {
+            if (this.value.length > 50) {
+                this.value = this.value.substring(0, 0);
+                alert("Max 50 tecken")
+            }
+            });
+
     function validateAd(){
         let inputAd = document.getElementById('address').value;
         let adRegex = /^([a-zA-Z0-9\s].*)\s([0-9]{5})\s([a-zA-Z0-9\s].*)$/;
@@ -110,10 +127,19 @@
 
             console.log("rätt");
         } else {
-            alert("Måste vara i korrekt format (Solgatan 12 123 45 Stockholm)");
+            alert("Måste vara i korrekt format (Solgatan 12 12345 Stockholm)");
         }
     }
 
-    displayProductInfo();
+            var inputAddress = document.getElementById("address");
+
+            inputAddress.addEventListener("keyup", function() {
+        if (this.value.length > 50) {
+            this.value = this.value.substring(0, 0);
+            alert("Max 50 tecken")
+        }
+        });
+
+    
 
 </script>
