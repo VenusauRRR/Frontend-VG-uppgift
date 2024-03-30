@@ -207,19 +207,46 @@ function updateOrderDetail(element) {
     localStorage.setItem('selectedProductList', JSON.stringify(selectedProductList));
 }
 
-let confirmOrderCounter = 0;
-let confirmOrderList = [];
+let confirmOrderCounter = 1;
 
 function confirmOrder() {
     let order = {
-        id: confirmOrderCounter++,
-        name: document.getElementById('name'),
-        phone: document.getElementById('tel'),
-        email: document.getElementById('email'),
-        address: document.getElementById('address'),
+        id: confirmOrderCounter,
+        name: document.getElementById('name').value,
+        phone: document.getElementById('tel').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
         selectedProductList: selectedProductList,
-        totalSum: totalSum
+        totalSum: localStorage.getItem('totalSum')
     }
-    confirmOrderList.push(order);
-    localStorage.setItem('confirmOrderList', JSON.stringify(order));
+    confirmOrderCounter++;
+    localStorage.setItem('confirmOrder', JSON.stringify(order));
+    localStorage.removeItem('selectedProductList');
+    localStorage.removeItem('totalSum');
+}
+
+function loadContent(page) {
+    $.ajax({
+        url: page + '.html',
+        dataType: 'html',
+        success: function (response) {
+            $('#content').html(response);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading page: ' + page, status, error);
+        }
+    });
+}
+
+function getConfirmOrder() {
+
+    let orderPage = document.getElementById('confirmOrder');
+    const orderDetail = JSON.parse(localStorage.getItem('confirmOrder'));
+    console.log(orderDetail.name);
+    orderPage.innerHTML = `
+    <li>${orderDetail.name}</li>
+    <li>${orderDetail.phone}</li>
+    <li>${orderDetail.email}</li>
+    <li>${orderDetail.address}</li>
+    `;
 }

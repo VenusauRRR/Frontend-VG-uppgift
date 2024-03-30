@@ -32,10 +32,11 @@
 
                     <div class="collapse navbar-collapse headboard">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li><a href="#" class="nav-link a" data-page="home">Hem</a></li>
-                            <li><a href="#" class="nav-link b" data-page="product">Produkter</a></li>
-                            <li><a href="#" class="nav-link c" data-page="orderform">Beställningar</a></li>
-                            <li><a href="#" class="nav-link d" data-page="contactform">Kontakt</a></li>
+                            <li><a href="#" class="nav-link" data-page="home">Hem</a></li>
+                            <li><a href="#" class="nav-link" data-page="product">Produkter</a></li>
+                            <li><a href="#" class="nav-link" data-page="orderform">Beställningar</a></li>
+                            <li><a href="#" class="nav-link" data-page="confirmOrder">Bekräftelse</a></li>
+                            <li><a href="#" class="nav-link" data-page="contactform">Kontakt</a></li>
                         </ul>
                     </div>
 
@@ -84,6 +85,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-page="orderform">Beställningar</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="confirmOrder">Bekräftelse</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -125,24 +129,18 @@
     <script src="script.js"></script>
     <script>
         $(document).ready(function () {
-            function loadContent(page) {
-                $.ajax({
-                    url: page + '.html',
-                    dataType: 'html',
-                    success: function (response) {
-                        $('#content').html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error loading page: ' + page, status, error);
-                    }
-                });
-            }
+
 
             loadContent('home');
 
             $(document).on('click', '.btn-primary', function (e) {
                 e.preventDefault();
                 loadContent('orderform');
+            });
+
+            $(document).on('click', '#submitOrderBtn', function (e) {
+                e.preventDefault();
+                loadContent('confirmOrder');
             });
 
             $('.nav-link').click(function (e) {

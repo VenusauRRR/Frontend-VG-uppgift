@@ -7,16 +7,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.headboard .a:hover{
-    text-decoration: underline;
-}
-.headboard .b:hover{
-    text-decoration: underline;
-}
-.headboard .c:hover{
-    text-decoration: underline;
-}
-.headboard .d:hover{
+.navbar-nav li:hover{
     text-decoration: underline;
 }
 
