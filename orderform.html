@@ -119,12 +119,12 @@ displayProductInfo()
 
     function validateAd(){
         let inputAd = document.getElementById('address').value;
-        let adRegex = /^([a-zA-Z0-9\s]+)\s([0-9]{1,5})\s([a-zA-Z0-9\s]+)\s([a-zA-Z]+)$/;
+        let adRegex = /^([a-zA-Z0-9\s].*)\s([0-9]{5})\s([a-zA-Z0-9\s].*)$/;
         if (adRegex.test(inputAd)){
 
             console.log("rätt");
         } else {
-            alert("Måste vara i korrekt format (Solgatan 12 123 45 Stockholm)");
+            alert("Måste vara i korrekt format (Solgatan 12 12345 Stockholm)");
         }
     }
 
