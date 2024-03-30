@@ -119,7 +119,7 @@ displayProductInfo()
 
     function validateAd(){
         let inputAd = document.getElementById('address').value;
-        let adRegex = /^([a-zA-Z0-9\s].*)\s([0-9]{5})\s([a-zA-Z0-9\s].*)$/;
+        let adRegex = /^([a-zA-Z0-9\s]+)\s([0-9]{1,5})\s([a-zA-Z0-9\s]+)\s([a-zA-Z]+)$/;
         if (adRegex.test(inputAd)){
 
             console.log("rätt");
