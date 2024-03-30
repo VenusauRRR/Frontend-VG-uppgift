@@ -1,4 +1,5 @@
-let selectedProductList = []
+let selectedProductList = [];
+
 
 function displayProducts(categoryTitle, categoryAPI) {
     fetch(categoryAPI)
@@ -69,17 +70,23 @@ function displayProducts(categoryTitle, categoryAPI) {
 
 function sendData(product) {
     product.orderSum = 1;
-    product.subTotal = product.orderSum*Number(product.price);
+    product.subTotal = product.orderSum * Number(product.price);
     selectedProductList.push(product);
 
     localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
 }
 
 function updateTotalSum() {
+    // const existTotalSum = JSON.parse(localStorage.getItem('totalSum'));
+    // if (existTotalSum != null){
+    //     totalProdSum.innerText = `Total Sum: $${totalSum}`;
+    // }
+
     let totalSum = 0;
     let totalProdSum = document.getElementById('totalSum');
     selectedProductList.forEach(element => {
         totalSum += element.subTotal;
+        console.log(element.subTotal + ' ' + totalSum);
     })
     totalProdSum.innerText = `Total Sum: $${totalSum}`;
     localStorage.setItem('totalSum', totalSum);
@@ -121,7 +128,7 @@ function displayProductInfo() {
         amountBtnDiv.appendChild(minusBtn);
 
         const numBtn = document.createElement('span');
-        numBtn.innerHTML = element.orderSum == null? '01' : '0' + element.orderSum;
+        numBtn.innerHTML = element.orderSum == null ? '01' : '0' + element.orderSum;
         numBtn.classList.add(`num${index}`);
         amountBtnDiv.appendChild(numBtn);
 
@@ -156,7 +163,7 @@ function displayProductInfo() {
 
         let amountNum = element.orderSum;
 
-            updateTotalSum();
+        updateTotalSum();
 
         plus.addEventListener('click', () => {
             amountNum++;
@@ -164,7 +171,7 @@ function displayProductInfo() {
             element.orderSum = amountNum;
             element.subTotal = Number(element.price) * amountNum;
             prodSum.innerHTML = '$' + element.subTotal;
-            localStorage.setItem('selectedProductList',JSON.stringify(product));
+            localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
 
@@ -180,7 +187,7 @@ function displayProductInfo() {
             }
             element.subTotal = Number(element.price) * amountNum;
             prodSum.innerHTML = '$' + element.subTotal;
-            localStorage.setItem('selectedProductList',JSON.stringify(product));
+            localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
 
@@ -189,14 +196,30 @@ function displayProductInfo() {
 } //displayProductInfo() ends
 
 
-function updateOrderDetail(element){
+function updateOrderDetail(element) {
     selectedProductList.forEach(item => {
-        if (item.id == element.id){
+        if (item.id == element.id) {
             item.orderSum = element.orderSum;
             item.subTotal = element.subTotal;
         }
     })
     updateTotalSum();
-    localStorage.setItem('selectedProductList',JSON.stringify(selectedProductList));
+    localStorage.setItem('selectedProductList', JSON.stringify(selectedProductList));
 }
 
+let confirmOrderCounter = 0;
+let confirmOrderList = [];
+
+function confirmOrder() {
+    let order = {
+        id: confirmOrderCounter++,
+        name: document.getElementById('name'),
+        phone: document.getElementById('tel'),
+        email: document.getElementById('email'),
+        address: document.getElementById('address'),
+        selectedProductList: selectedProductList,
+        totalSum: totalSum
+    }
+    confirmOrderList.push(order);
+    localStorage.setItem('confirmOrderList', JSON.stringify(order));
+}
