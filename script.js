@@ -82,6 +82,20 @@ function updateTotalSum() {
     //     totalProdSum.innerText = `Total Sum: $${totalSum}`;
     // }
 
+    let emptyCart = document.getElementById('emptyCart');
+
+    let emptyCartBtn = document.createElement('input');
+    emptyCartBtn.classList.add('btn');
+    emptyCartBtn.type = 'button';
+    emptyCartBtn.classList.add('btn-success');
+    emptyCartBtn.value = 'Empty Cart';
+    emptyCartBtn.addEventListener('click', () => {
+        localStorage.clear();
+        loadContent('orderform');
+    })
+
+    emptyCart.appendChild(emptyCartBtn);
+
     let totalSum = 0;
     let totalProdSum = document.getElementById('totalSum');
     selectedProductList.forEach(element => {
@@ -112,8 +126,6 @@ function displayProductInfo() {
         const prodImg = document.createElement('img');
         prodImg.src = element.image;
         prodImg.alt = element.title;
-        // prodImg.classList.add('card-img-top');
-        // prodImg.classList.add('bg-secondary');
         prodImg.style.maxHeight = '10em';
         prodImg.style.maxWidth = '10em';
         prodImg.classList.add('col-md-2');
@@ -265,8 +277,8 @@ function getConfirmOrder() {
         li.classList.add('border-success');
 
         let img = document.createElement('img');
-        img.style.maxHeight='5em';
-        img.style.maxWidth='fit-content';
+        img.style.maxHeight = '5em';
+        img.style.maxWidth = 'fit-content';
         img.src = element.image;
         img.alt = element.title;
         li.appendChild(img);
