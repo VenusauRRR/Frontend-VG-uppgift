@@ -1,4 +1,4 @@
-let selectedProductList = [];
+const selectedProductList = [];
 
 
 function displayProducts(categoryTitle, categoryAPI) {
@@ -242,11 +242,44 @@ function getConfirmOrder() {
 
     let orderPage = document.getElementById('confirmOrder');
     const orderDetail = JSON.parse(localStorage.getItem('confirmOrder'));
-    console.log(orderDetail.name);
+    orderPage.classList.add('list-unstyled');
     orderPage.innerHTML = `
-    <li>${orderDetail.name}</li>
-    <li>${orderDetail.phone}</li>
-    <li>${orderDetail.email}</li>
-    <li>${orderDetail.address}</li>
+    <h1>Thank you for your order!</h1>
+    <li>Name: ${orderDetail.name}</li>
+    <li>Phone: ${orderDetail.phone}</li>
+    <li>Email: ${orderDetail.email}</li>
+    <li>Address: ${orderDetail.address}</li>
+    <br>
+    <li>Order Details:</li>
     `;
+
+
+    let ol = document.createElement('ol');
+    let productList = orderDetail.selectedProductList;
+    productList.forEach(element => {
+        console.log(element.title);
+        let li = document.createElement('li');
+        li.classList.add('border-bottom');
+        li.classList.add('pt-3');
+        li.classList.add('pb-3');
+        li.classList.add('border-success');
+
+        let img = document.createElement('img');
+        img.style.maxHeight='5em';
+        img.style.maxWidth='fit-content';
+        img.src = element.image;
+        img.alt = element.title;
+        li.appendChild(img);
+
+        let span = document.createElement('span');
+        span.textContent = `${element.title} x ${element.orderSum}/pcs = Subtotal: $${element.subTotal}`;
+        li.appendChild(span);
+        ol.appendChild(li);
+    })
+    orderPage.appendChild(ol);
+
+    let totalSumLi = document.createElement('li');
+    totalSumLi.textContent = `Total Amount: $${orderDetail.totalSum}`;
+
+    orderPage.appendChild(totalSumLi);
 }
