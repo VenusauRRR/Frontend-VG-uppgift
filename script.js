@@ -1,4 +1,5 @@
 let selectedProductList = [];
+let totalSum = JSON.parse(localStorage.getItem('totalSum'));
 
 
 function displayProducts(categoryTitle, categoryAPI) {
@@ -74,17 +75,21 @@ function sendData(product) {
     selectedProductList.push(product);
 
     localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
+    updateTotalSum();
 }
 
 function updateTotalSum() {
-    let totalSum = 0;
+    let temp = 0;
     let totalProdSum = document.getElementById('totalSum');
     selectedProductList.forEach(element => {
-        totalSum += element.subTotal;
-        console.log(element.subTotal + ' ' + totalSum);
+        temp += element.subTotal;
+        console.log(element.subTotal + ' ' + temp);
     })
-    totalProdSum.innerText = `Total Sum: $${totalSum}`;
+    totalSum = temp;
     localStorage.setItem('totalSum', totalSum);
+    // const totalsumLS = JSON.parse(localStorage.getItem('totalSum'));
+    totalProdSum.innerText = `Total Sum: $${totalSum.toFixed(2)}`;
+
 
     emptyCart.innerHTML = `<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
 
@@ -170,13 +175,18 @@ function displayProductInfo() {
 
         productInfo.appendChild(div);
 
+        const totalSumValue = document.getElementById('totalSum');
+        totalSumValue.innerHTML = totalSum;
+
         const minus = document.querySelector(`.minus${index}`);
         const plus = document.querySelector(`.plus${index}`);
         const num = document.querySelector(`.num${index}`);
 
         let amountNum = element.orderSum;
 
-        updateTotalSum();
+        // updateTotalSum();
+        let totalProdSum = document.getElementById('totalSum');
+        totalProdSum.innerText = `Total Sum: $${totalSum.toFixed(2)}`;
 
         plus.addEventListener('click', () => {
             amountNum++;
@@ -295,7 +305,7 @@ function getConfirmOrder() {
     orderPage.appendChild(ol);
 
     let totalSumLi = document.createElement('li');
-    totalSumLi.textContent = `Total Amount: $${orderDetail.totalSum}`;
+    totalSumLi.textContent = `Total Amount: $${orderDetail.totalSum.toFixed(2)}`;
 
     orderPage.appendChild(totalSumLi);
 }
@@ -310,5 +320,6 @@ function removeSingleProduct(product) {
         }
     }
     selectedProductList = newList;
+    updateTotalSum();
     localStorage.setItem('selectedProductList', JSON.stringify(newList));
 }
