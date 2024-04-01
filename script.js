@@ -75,6 +75,7 @@ function sendData(product) {
     selectedProductList.push(product);
 
     localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
+
     updateTotalSum();
 }
 
@@ -91,6 +92,11 @@ function updateTotalSum() {
     totalProdSum.innerText = `Total Sum: $${totalSum.toFixed(2)}`;
 
 
+
+}
+
+function createEmptyCartBtn(){
+    let emptyCart = document.getElementById('emptyCart');
     emptyCart.innerHTML = `<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
 
     let emptyCartBtn = document.getElementById('emptyCartBtn');
@@ -172,6 +178,8 @@ function displayProductInfo() {
         deleteBtnDiv.appendChild(deleteBtn);
 
         div.appendChild(deleteBtnDiv);
+
+        createEmptyCartBtn();
 
         productInfo.appendChild(div);
 
@@ -305,7 +313,8 @@ function getConfirmOrder() {
     orderPage.appendChild(ol);
 
     let totalSumLi = document.createElement('li');
-    totalSumLi.textContent = `Total Amount: $${orderDetail.totalSum.toFixed(2)}`;
+    let formatTotalSum = Number(orderDetail.totalSum).toFixed(2);
+    totalSumLi.textContent = `Total Amount: $${formatTotalSum}`;
 
     orderPage.appendChild(totalSumLi);
 }
