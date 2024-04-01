@@ -91,7 +91,7 @@ function updateTotalSum() {
     let emptyCartBtn = document.getElementById('emptyCartBtn');
     emptyCartBtn.addEventListener('click', () => {
         localStorage.clear();
-        loadContent('orderform');
+        location.reload();
     })
 }
 
