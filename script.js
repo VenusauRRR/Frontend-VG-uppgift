@@ -77,25 +77,6 @@ function sendData(product) {
 }
 
 function updateTotalSum() {
-    // const existTotalSum = JSON.parse(localStorage.getItem('totalSum'));
-    // if (existTotalSum != null){
-    //     totalProdSum.innerText = `Total Sum: $${totalSum}`;
-    // }
-
-    let emptyCart = document.getElementById('emptyCart');
-
-    let emptyCartBtn = document.createElement('input');
-    emptyCartBtn.classList.add('btn');
-    emptyCartBtn.type = 'button';
-    emptyCartBtn.classList.add('btn-success');
-    emptyCartBtn.value = 'Empty Cart';
-    emptyCartBtn.addEventListener('click', () => {
-        localStorage.clear();
-        loadContent('orderform');
-    })
-
-    emptyCart.appendChild(emptyCartBtn);
-
     let totalSum = 0;
     let totalProdSum = document.getElementById('totalSum');
     selectedProductList.forEach(element => {
@@ -104,6 +85,14 @@ function updateTotalSum() {
     })
     totalProdSum.innerText = `Total Sum: $${totalSum}`;
     localStorage.setItem('totalSum', totalSum);
+
+    emptyCart.innerHTML=`<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
+
+    let emptyCartBtn = document.getElementById('emptyCartBtn');
+    emptyCartBtn.addEventListener('click', () => {
+        localStorage.clear();
+        loadContent('orderform');
+    })
 }
 
 
