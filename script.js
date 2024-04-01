@@ -260,6 +260,7 @@ function getConfirmOrder() {
     orderPage.classList.add('list-unstyled');
     orderPage.innerHTML = `
     <h1>Thank you for your order!</h1>
+    <li>Order No.: ${orderDetail.id}</li>
     <li>Name: ${orderDetail.name}</li>
     <li>Phone: ${orderDetail.phone}</li>
     <li>Email: ${orderDetail.email}</li>
