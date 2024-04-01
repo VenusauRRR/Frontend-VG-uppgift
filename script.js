@@ -88,7 +88,6 @@ function updateTotalSum() {
     })
     totalSum = temp;
     localStorage.setItem('totalSum', totalSum);
-    // const totalsumLS = JSON.parse(localStorage.getItem('totalSum'));
     totalProdSum.innerText = `Total Sum: $${totalSum.toFixed(2)}`;
 
 
