@@ -1,4 +1,4 @@
-const selectedProductList = [];
+let selectedProductList = [];
 
 
 function displayProducts(categoryTitle, categoryAPI) {
@@ -86,7 +86,7 @@ function updateTotalSum() {
     totalProdSum.innerText = `Total Sum: $${totalSum}`;
     localStorage.setItem('totalSum', totalSum);
 
-    emptyCart.innerHTML=`<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
+    emptyCart.innerHTML = `<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
 
     let emptyCartBtn = document.getElementById('emptyCartBtn');
     emptyCartBtn.addEventListener('click', () => {
@@ -141,26 +141,38 @@ function displayProductInfo() {
         amountBtnDiv.classList.add('col-md-1');
         amountBtnDiv.style.cursor = 'pointer';
 
+
         div.innerHTML += `
-    <div class="col-md-7">${element.title}</div>
-    <div class="col-md-1">$${element.price}</div>
+    <div class="col-md-6">${element.title}</div>
+    <div class="col-md-1">$${element.price}/pc</div>
     `;
 
         div.appendChild(amountBtnDiv);
 
         const productSum = document.createElement('span');
-        productSum.innerHTML = `$${element.price}`;
+        productSum.innerHTML = `$${element.subTotal}`;
         productSum.classList.add(`productSum${index}`);
         productSum.classList.add('subSum');
         productSum.classList.add('col-md-1');
         div.appendChild(productSum);
+
+        const deleteBtnDiv = document.createElement('div');
+        deleteBtnDiv.classList.add('col-md-1');
+
+        const deleteBtn = document.createElement('input');
+        deleteBtn.type = 'button';
+        deleteBtn.value = 'Delete';
+        deleteBtn.classList.add('btn');
+        deleteBtn.classList.add('btn-light');
+        deleteBtnDiv.appendChild(deleteBtn);
+
+        div.appendChild(deleteBtnDiv);
 
         productInfo.appendChild(div);
 
         const minus = document.querySelector(`.minus${index}`);
         const plus = document.querySelector(`.plus${index}`);
         const num = document.querySelector(`.num${index}`);
-        let prodSum = document.querySelector(`.productSum${index}`);
 
         let amountNum = element.orderSum;
 
@@ -171,7 +183,6 @@ function displayProductInfo() {
             num.innerHTML = amountNum < 10 ? '0' + amountNum : amountNum;
             element.orderSum = amountNum;
             element.subTotal = Number(element.price) * amountNum;
-            prodSum.innerHTML = '$' + element.subTotal;
             localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
@@ -187,11 +198,14 @@ function displayProductInfo() {
                 num.innerHTML = '0' + amountNum;
             }
             element.subTotal = Number(element.price) * amountNum;
-            prodSum.innerHTML = '$' + element.subTotal;
             localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
 
+        deleteBtn.addEventListener('click', () => {
+            removeSingleProduct(element);
+            loadContent('orderform');
+        })
     });
 
 } //displayProductInfo() ends
@@ -283,4 +297,17 @@ function getConfirmOrder() {
     totalSumLi.textContent = `Total Amount: $${orderDetail.totalSum}`;
 
     orderPage.appendChild(totalSumLi);
+}
+
+function removeSingleProduct(product) {
+    let newList = JSON.parse(localStorage.getItem('selectedProductList'));
+
+    for (let i = 0; i < newList.length; i++) {
+        if (newList.at(i).id == product.id) {
+            newList.splice(i, 1);
+            console.log(newList);
+        }
+    }
+    selectedProductList = newList;
+    localStorage.setItem('selectedProductList', JSON.stringify(newList));
 }
