@@ -70,10 +70,33 @@ function displayProducts(categoryTitle, categoryAPI) {
 }
 
 function sendData(product) {
-    product.orderSum = 1;
-    product.subTotal = product.orderSum * Number(product.price);
-    selectedProductList.push(product);
+    console.log('product id:' + product.id);
+    if (selectedProductList.length == 0) {
+        selectedProductList.push(product);
+        product.orderSum = 1;
+        console.log('product sum: ' + product.orderSum);
+    } else {
+        productExist = false;
+        for (let i = 0; i < selectedProductList.length; i++) {
+            if (selectedProductList.at(i).id == product.id) {
+                selectedProductList.at(i).orderSum++;
+                product.orderSum = selectedProductList.at(i).orderSum;
+                // console.log(selectedProductList.at(i).orderSum);
+                // console.log('list id: '+selectedProductList.at(i).id);
+                selectedProductList.at(i).subTotal = selectedProductList.at(i).orderSum * selectedProductList.at(i).price;
+                productExist = true;
+                break;
+            }
+        }
+        if (productExist == false) {
+            selectedProductList.push(product);
+            product.orderSum = 1;
+        }
+    }
 
+    product.subTotal = product.orderSum * Number(product.price);
+    console.log('order sum: ' + product.orderSum);
+    console.log('subtotal: ' + product.subTotal);
     localStorage.setItem("selectedProductList", JSON.stringify(selectedProductList));
 
     updateTotalSum();
@@ -94,7 +117,7 @@ function updateTotalSum() {
 
 }
 
-function createEmptyCartBtn(){
+function createEmptyCartBtn() {
     let emptyCart = document.getElementById('emptyCart');
     emptyCart.innerHTML = `<input type="button" class="btn btn-success" id="emptyCartBtn" value="Empty Cart">`;
 
@@ -200,6 +223,7 @@ function displayProductInfo() {
             num.innerHTML = amountNum < 10 ? '0' + amountNum : amountNum;
             element.orderSum = amountNum;
             element.subTotal = Number(element.price) * amountNum;
+            productSum.innerHTML = element.subTotal;
             localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
@@ -215,6 +239,7 @@ function displayProductInfo() {
                 num.innerHTML = '0' + amountNum;
             }
             element.subTotal = Number(element.price) * amountNum;
+            productSum.innerHTML = element.subTotal;
             localStorage.setItem('selectedProductList', JSON.stringify(product));
             updateOrderDetail(element);
         })
