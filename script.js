@@ -71,29 +71,34 @@ function displayProducts(categoryTitle, categoryAPI) {
 
 function sendData(product) {
     console.log('product id:' + product.id);
+    //cart is empty
     if (selectedProductList.length == 0) {
         selectedProductList.push(product);
         product.orderSum = 1;
         console.log('product sum: ' + product.orderSum);
     } else {
+        //cart is not empty
         productExist = false;
         for (let i = 0; i < selectedProductList.length; i++) {
+            //if newly added product already exists in the cart
+            //order sum increases by 1
             if (selectedProductList.at(i).id == product.id) {
                 selectedProductList.at(i).orderSum++;
                 product.orderSum = selectedProductList.at(i).orderSum;
-                // console.log(selectedProductList.at(i).orderSum);
-                // console.log('list id: '+selectedProductList.at(i).id);
                 selectedProductList.at(i).subTotal = selectedProductList.at(i).orderSum * selectedProductList.at(i).price;
                 productExist = true;
                 break;
             }
         }
+        //if newly added product hasnt existed in the cart
+        //add to the cart/arraylist
         if (productExist == false) {
             selectedProductList.push(product);
             product.orderSum = 1;
         }
     }
 
+    //update the product sum, total sum and local storage
     product.subTotal = product.orderSum * Number(product.price);
     console.log('order sum: ' + product.orderSum);
     console.log('subtotal: ' + product.subTotal);
@@ -189,6 +194,7 @@ function displayProductInfo() {
         productSum.classList.add('col-md-1');
         div.appendChild(productSum);
 
+        //create delete button
         const deleteBtnDiv = document.createElement('div');
         deleteBtnDiv.classList.add('col-md-1');
 
@@ -208,6 +214,7 @@ function displayProductInfo() {
         const totalSumValue = document.getElementById('totalSum');
         totalSumValue.innerHTML = totalSum;
 
+        // create buttons for minus (-), OrderSum, plus (+)
         const minus = document.querySelector(`.minus${index}`);
         const plus = document.querySelector(`.plus${index}`);
         const num = document.querySelector(`.num${index}`);
@@ -218,6 +225,7 @@ function displayProductInfo() {
         let totalProdSum = document.getElementById('totalSum');
         totalProdSum.innerText = `Total Sum: $${totalSum.toFixed(2)}`;
 
+        //action for + button
         plus.addEventListener('click', () => {
             amountNum++;
             num.innerHTML = amountNum < 10 ? '0' + amountNum : amountNum;
@@ -228,6 +236,7 @@ function displayProductInfo() {
             updateOrderDetail(element);
         })
 
+        //action for - button
         minus.addEventListener('click', () => {
             amountNum--;
             if (amountNum < 1) {
@@ -244,6 +253,7 @@ function displayProductInfo() {
             updateOrderDetail(element);
         })
 
+        //action for delete button
         deleteBtn.addEventListener('click', () => {
             removeSingleProduct(element);
             loadContent('orderform');
@@ -296,7 +306,7 @@ function loadContent(page) {
 }
 
 function getConfirmOrder() {
-
+    //create html attribute for customer details
     let orderPage = document.getElementById('confirmOrder');
     const orderDetail = JSON.parse(localStorage.getItem('confirmOrder'));
     orderPage.classList.add('list-unstyled');
@@ -311,7 +321,7 @@ function getConfirmOrder() {
     <li>Order Details:</li>
     `;
 
-
+    //create list for displaying products
     let ol = document.createElement('ol');
     let productList = orderDetail.selectedProductList;
     productList.forEach(element => {
@@ -336,6 +346,7 @@ function getConfirmOrder() {
     })
     orderPage.appendChild(ol);
 
+    //create a list item for displaying total sum
     let totalSumLi = document.createElement('li');
     let formatTotalSum = Number(orderDetail.totalSum).toFixed(2);
     totalSumLi.textContent = `Total Amount: $${formatTotalSum}`;
@@ -343,6 +354,8 @@ function getConfirmOrder() {
     orderPage.appendChild(totalSumLi);
 }
 
+//function to remove single product
+//update the total sum and local storage
 function removeSingleProduct(product) {
     let newList = JSON.parse(localStorage.getItem('selectedProductList'));
 
